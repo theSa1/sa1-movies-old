@@ -1,5 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
-import Link from "next/link";
+import Head from "next/head";
 import { Layout } from "../components/Layout";
 import { MovieCard } from "../components/MovieCard";
 import { organizeMovies } from "../lib/organizeMovies";
@@ -14,16 +14,21 @@ const Home: NextPage<{
   }[];
 }> = ({ popularMovies }) => {
   return (
-    <Layout>
-      <div className="px-2 py-5 container mx-auto">
-        <h3 className="text-2xl font-semibold mb-1">Popular Movies</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
-          {popularMovies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
+    <>
+      <Head>
+        <title>Sa1 Movies</title>
+      </Head>
+      <Layout>
+        <div className="px-2 py-5 container mx-auto">
+          <h3 className="text-2xl font-semibold mb-1">Popular Movies</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            {popularMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 
