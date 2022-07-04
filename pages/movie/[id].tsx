@@ -24,7 +24,7 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
   return (
     <>
       <Head>
-        <title>{movie.title} | Sa1 Movies</title>
+        <title>{`${movie.tagline} | Sa1 Movies`}</title>
       </Head>
       <Layout>
         <div className="container mx-auto grid grid-cols-12 gap-5 px-2 py-5">
@@ -36,11 +36,17 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
           </h1>
           {movie.backdrop && (
             <div
-              className="bg-white md:col-span-9 col-span-12 aspect-[14/6] rounded-lg bg-cover bg-center"
+              className="bg-white md:col-span-9 col-span-12 aspect-[14/6] rounded-lg bg-cover bg-center relative"
               style={{
                 backgroundImage: `url(${movie.backdrop})`,
               }}
-            ></div>
+            >
+              <div className="h-12 w-12 absolute top-0 right-0 cursor-pointer p-2">
+                <svg viewBox="0 0 24 24" fill="#fff">
+                  <path d="M14 10H3v2h11v-2zm0-4H3v2h11V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM3 16h7v-2H3v2z"></path>
+                </svg>
+              </div>
+            </div>
           )}
           {movie.poster && (
             <div
