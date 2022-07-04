@@ -211,6 +211,10 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const languageNames = new Intl.DisplayNames(["en"], {
+    type: "language",
+  });
+
   const res = await fetch(
     `https://api.themoviedb.org/3/movie/${context.params?.id}?api_key=${process.env.API_KEY}&language=en-US&append_to_response=watch%2Fproviders,videos,credits,recommendations`
   );
@@ -241,7 +245,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     status: data.status,
     releseDate: data.release_date,
     runtime: data.runtime,
-    originalLanguage: data.original_language,
+    originalLanguage: languageNames.of(data.original_language),
     budget: `$${(data.budget as number).toLocaleString()}`,
     revenue: `$${(data.revenue as number).toLocaleString()}`,
     whereToWatch: organizePlatforms(data["watch/providers"]),

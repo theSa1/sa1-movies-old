@@ -4,15 +4,20 @@ import { Layout } from "../components/Layout";
 import { MovieCard } from "../components/MovieCard";
 import { organizeMovies } from "../lib/organizeMovies";
 
+type Movie = {
+  id: number;
+  rating: number;
+  poster: string;
+  title: string;
+  releaseDate: string;
+};
+
 const Home: NextPage<{
-  popularMovies: {
-    id: number;
-    rating: number;
-    poster: string;
-    title: string;
-    releaseDate: string;
-  }[];
-}> = ({ popularMovies }) => {
+  popularMovies: Movie[];
+  topMovies: Movie[];
+  onTheaters: Movie[];
+  upcomingMovies: Movie[];
+}> = ({ popularMovies, topMovies, onTheaters, upcomingMovies }) => {
   return (
     <>
       <Head>
@@ -26,6 +31,26 @@ const Home: NextPage<{
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
+          <h3 className="text-2xl font-semibold mb-1 mt-6">Top Movies</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            {topMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+          <h3 className="text-2xl font-semibold mb-1 mt-6">On Theaters</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            {onTheaters.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+          <h3 className="text-2xl font-semibold mb-1 mt-6">
+            Top Upcoming Movies
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            {upcomingMovies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
         </div>
       </Layout>
     </>
@@ -33,16 +58,53 @@ const Home: NextPage<{
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=en-US&page=1&region=IN`
-  );
+  const getPopularMovies = async () => {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=en-US&page=1&region=IN`
+    );
 
-  const { results } = await res.json();
+    const { results } = await res.json();
 
-  const popularMovies = organizeMovies(results);
+    return organizeMovies(results);
+  };
+
+  const getTopMovies = async () => {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}&language=en-US&page=1&region=IN`
+    );
+
+    const { results } = await res.json();
+
+    return organizeMovies(results);
+  };
+
+  const getOnTheaters = async () => {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.API_KEY}&language=en-US&page=1&region=IN`
+    );
+
+    const { results } = await res.json();
+
+    return organizeMovies(results);
+  };
+
+  const getUpcomingMovies = async () => {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.API_KEY}&language=en-US&page=1&region=IN`
+    );
+
+    const { results } = await res.json();
+
+    return organizeMovies(results);
+  };
 
   return {
-    props: { popularMovies },
+    props: {
+      popularMovies: await getPopularMovies(),
+      topMovies: await getTopMovies(),
+      onTheaters: await getOnTheaters(),
+      upcomingMovies: await getUpcomingMovies(),
+    },
   };
 };
 
