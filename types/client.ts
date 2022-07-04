@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 
 export type Movie = {
+  id: number;
   title: string;
   poster?: string;
   backdrop?: string;

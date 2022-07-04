@@ -1,10 +1,11 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { ClerkProvider } from "@clerk/nextjs";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ClerkProvider frontendApi={process.env.NEXT_PUBLIC_CLERK_FRONTEND_API}>
       <Head>
         <link
           rel="apple-touch-icon"
@@ -27,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#DAE0E6" />
       </Head>
       <Component {...pageProps} />
-    </>
+    </ClerkProvider>
   );
 }
 
