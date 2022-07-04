@@ -169,12 +169,12 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
             Watch
           </h3>
           <div className="col-span-12 aspect-video bg-white rounded-lg overflow-hidden">
-            {/* <iframe
+            <iframe
               width="100%"
               height="100%"
               src={movie.watch}
               allowFullScreen
-            ></iframe> */}
+            ></iframe>
           </div>
           <h3 className="col-span-12 text-xl font-semibold mt-3 -mb-3">
             Top Casts
