@@ -1,4 +1,4 @@
-import { SignIn, UserProfile } from "@clerk/nextjs";
+import { UserProfile } from "@clerk/nextjs";
 import { Layout } from "../../components/Layout";
 
 const UserProfilePage = () => {

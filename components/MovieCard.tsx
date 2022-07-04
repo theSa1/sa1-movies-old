@@ -36,7 +36,7 @@ export const MovieCard = ({
               fill="#FFD700"
             />
           </svg>
-          <p className="text-xs">8.5/10</p>
+          <p className="text-xs">{movie.rating}/10</p>
         </div>
       </div>
     </div>

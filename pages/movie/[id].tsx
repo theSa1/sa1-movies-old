@@ -1,3 +1,4 @@
+import { SignedIn, useAuth } from "@clerk/nextjs";
 import { GetServerSideProps } from "next";
 import Error from "next/error";
 import Head from "next/head";
@@ -9,8 +10,11 @@ import { organizeCast } from "../../lib/organizeCast";
 import { organizeMovies } from "../../lib/organizeMovies";
 import { organizePlatforms } from "../../lib/organizePlatforms";
 import { MoviePage } from "../../types/client";
+import toast, { Toaster } from "react-hot-toast";
 
 const MoviePage: MoviePage = ({ movie, statusCode }) => {
+  const { getToken } = useAuth();
+
   if (statusCode !== 200) {
     return <Error statusCode={statusCode} />;
   }
@@ -21,11 +25,44 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
     return `${hours}h ${minutes}m`;
   };
 
+  const handleAddWatchlist = async () => {
+    const tostId = toast.loading("Adding to watchlist");
+
+    const token = await getToken({
+      template: "backend",
+    });
+
+    const res = await fetch("/api/addToWatchlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+        id: movie.id,
+      }),
+    });
+
+    toast.dismiss(tostId);
+    if (res.status !== 200) {
+      if (res.status === 400) {
+        toast.error("Movie alredy added to watchlist");
+      } else {
+        toast.error("Failed");
+      }
+    } else {
+      toast.success("Added this movie to watchlist");
+    }
+  };
+
   return (
     <>
       <Head>
         <title>{`${movie.tagline} | Sa1 Movies`}</title>
       </Head>
+      <SignedIn>
+        <Toaster />
+      </SignedIn>
       <Layout>
         <div className="container mx-auto grid grid-cols-12 gap-5 px-2 py-5">
           <h1 className="col-span-12 text-2xl font-semibold">
@@ -41,11 +78,16 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
                 backgroundImage: `url(${movie.backdrop})`,
               }}
             >
-              <div className="h-12 w-12 absolute top-0 right-0 cursor-pointer p-2">
-                <svg viewBox="0 0 24 24" fill="#fff">
-                  <path d="M14 10H3v2h11v-2zm0-4H3v2h11V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM3 16h7v-2H3v2z"></path>
-                </svg>
-              </div>
+              <SignedIn>
+                <div
+                  className="h-12 w-12 absolute top-0 right-0 cursor-pointer p-2"
+                  onClick={handleAddWatchlist}
+                >
+                  <svg viewBox="0 0 24 24" fill="#fff">
+                    <path d="M14 10H3v2h11v-2zm0-4H3v2h11V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM3 16h7v-2H3v2z"></path>
+                  </svg>
+                </div>
+              </SignedIn>
             </div>
           )}
           {movie.poster && (
@@ -127,12 +169,12 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
             Watch
           </h3>
           <div className="col-span-12 aspect-video bg-white rounded-lg overflow-hidden">
-            <iframe
+            {/* <iframe
               width="100%"
               height="100%"
               src={movie.watch}
               allowFullScreen
-            ></iframe>
+            ></iframe> */}
           </div>
           <h3 className="col-span-12 text-xl font-semibold mt-3 -mb-3">
             Top Casts
@@ -184,6 +226,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await res.json();
 
   const movie = {
+    id: data.id,
     title: data.title,
     poster:
       data.poster_path &&
