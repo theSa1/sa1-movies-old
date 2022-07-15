@@ -1,6 +1,7 @@
 export const WhereToWatch = ({
   title,
   whereToWatch,
+  id
 }: {
   title: string;
   whereToWatch: {
@@ -14,6 +15,7 @@ export const WhereToWatch = ({
       icon: string;
     }[];
   };
+  id: number;
 }) => {
   return (
     <div className="col-span-12 md:col-span-4 bg-white p-5 rounded-lg space-y-3">
@@ -96,6 +98,10 @@ export const WhereToWatch = ({
               name: "Vega Movies",
               link: `https://vegamovies.rest/?s=${encodeURI(title)}`,
             },
+            {
+              name: "2Embed",
+              link: `https://2embed.org/embed/${id}`
+            }
           ].map((site) => (
             <a
               href={site.link}

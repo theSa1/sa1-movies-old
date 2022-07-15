@@ -146,7 +146,7 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
               </h3>
             </div>
           </div>
-          <WhereToWatch whereToWatch={movie.whereToWatch} title={movie.title} />
+          <WhereToWatch id={movie.id} whereToWatch={movie.whereToWatch} title={movie.title} />
           {movie.trailer && (
             <>
               <h3 className="col-span-12 text-xl font-semibold mt-3 -mb-3">
@@ -250,7 +250,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     revenue: `$${(data.revenue as number).toLocaleString()}`,
     whereToWatch: organizePlatforms(data["watch/providers"]),
     trailer: getMovieTrailer(data.videos.results),
-    watch: `https://www.2embed.to/embed/tmdb/movie?id=${data.id}`,
+    watch: `https://2embed.org/embed/${data.id}`,
     casts: organizeCast(data.credits),
     similar: organizeMovies(data.recommendations.results),
   };
