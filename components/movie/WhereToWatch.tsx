@@ -114,20 +114,20 @@ export const WhereToWatch = ({
             </a>
           ))}
         </div>
-        <h3>Direct Watch</h3>
+        <h3 className="mt-3">Direct Watch</h3>
         <div className="space-y-2">
           {[
             {
               name: "2Embed",
-              link: `https://2embed.org/download/${id}`
+              link: `https://www.2embed.to/embed/tmdb/movie?id=${id}`
             },
             {
               name: "2Embed.org",
               link: `https://2embed.org/embed/${id}`
             },
             {
-              name: "",
-              link: `https://www.2embed.to/embed/tmdb/movie?id=${id}`
+              name: "VidSrc",
+              link: `https://vidsrc.me/embed/${id}`
             }
           ].map((site) => (
             <a
