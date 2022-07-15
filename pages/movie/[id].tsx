@@ -58,7 +58,7 @@ const MoviePage: MoviePage = ({ movie, statusCode }) => {
   return (
     <>
       <Head>
-        <title>{`${movie.tagline} | Sa1 Movies`}</title>
+        <title>{`${movie.title} - ${movie.tagline} | Sa1 Movies`}</title>
       </Head>
       <SignedIn>
         <Toaster />
