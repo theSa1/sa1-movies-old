@@ -250,7 +250,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     revenue: `$${(data.revenue as number).toLocaleString()}`,
     whereToWatch: organizePlatforms(data["watch/providers"]),
     trailer: getMovieTrailer(data.videos.results),
-    watch: `https://2embed.org/embed/${data.id}`,
+    watch: `https://www.2embed.to/embed/tmdb/movie?id=${data.id}`,
     casts: organizeCast(data.credits),
     similar: organizeMovies(data.recommendations.results),
   };

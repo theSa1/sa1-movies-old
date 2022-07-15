@@ -114,6 +114,33 @@ export const WhereToWatch = ({
             </a>
           ))}
         </div>
+        <h3>Direct Watch</h3>
+        <div className="space-y-2">
+          {[
+            {
+              name: "2Embed",
+              link: `https://2embed.org/download/${id}`
+            },
+            {
+              name: "2Embed.org",
+              link: `https://2embed.org/embed/${id}`
+            },
+            {
+              name: "",
+              link: `https://www.2embed.to/embed/tmdb/movie?id=${id}`
+            }
+          ].map((site) => (
+            <a
+              href={site.link}
+              key={site.name}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block py-1 px-4 border rounded-md font-medium text-md hover:bg-slate-50 cursor-pointer mr-2"
+            >
+              {site.name}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
