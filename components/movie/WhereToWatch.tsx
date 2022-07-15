@@ -100,7 +100,7 @@ export const WhereToWatch = ({
             },
             {
               name: "2Embed",
-              link: `https://2embed.org/embed/${id}`
+              link: `https://2embed.org/download/${id}`
             }
           ].map((site) => (
             <a
